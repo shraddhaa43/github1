@@ -4,23 +4,21 @@ Resources:
     MyS3Bucket:
         Type: AWS::S3::Bucket
         Properties:
-            BucketName: mergeddata04
+            BucketName: mergeddata05
     
-    # GlueJobImport:
-    #     Type: AWS::Glue::Job
-    #     DependsOn: MyS3Bucket
-    #     Properties:
-    #         Name: data-import-from-RDS-and-S3
-    #         Description: Ingests data from s3 and writes it as a parquet file to the data lake
-    #         ExecutionClass: FLEX
-    #         GlueVersion: 4.0
-    #         MaxRetries: 0
-    #         NumberOfWorkers: 6
-    #         Role: arn:aws:iam::467280971091:role/LabRole
-    #         Timeout: 30
-    #         WorkerType: G.1X
-    #         Command:
-    #             Name: glueetl
-    #             ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
-    #         # DefaultArguments:
-    #         #     '--s3-bucket': !Ref s3Bucket  # Referencing the created S3 bucket
+    GlueJobImport:
+        Type: AWS::Glue::Job
+        DependsOn: MyS3Bucket
+        Properties:
+            Name: data-import-from-RDS-and-S3
+            Description: Ingests data from s3 and writes it as a parquet file to the data lake
+            ExecutionClass: FLEX
+            GlueVersion: 4.0
+            MaxRetries: 0
+            NumberOfWorkers: 6
+            Role: arn:aws:iam::467280971091:role/LabRole
+            Timeout: 30
+            WorkerType: G.1X
+            Command:
+                Name: glueetl
+                ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
