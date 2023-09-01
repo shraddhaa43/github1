@@ -5,7 +5,7 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Retain
         Properties:
-            BucketName: mergeddata06
+            BucketName: mergeddata07
     
     GlueJobImport:
         Type: AWS::Glue::Job
@@ -54,5 +54,5 @@ Resources:
             DatabaseName: database1
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddata06/datawarehouse/
+                    - Path: s3://mergeddata07/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
