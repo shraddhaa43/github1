@@ -23,7 +23,7 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --stack-name Injection2 \
+            --stack-name Injection3 \
             --template-file .github/workflows/cft.yml \
             --capabilities CAPABILITY_IAM
         env:

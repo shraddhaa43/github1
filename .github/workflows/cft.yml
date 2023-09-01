@@ -3,15 +3,15 @@ Description: "Create an S3 Bucket"
 Resources:
     MyS3Bucket:
         Type: AWS::S3::Bucket
-        DeletionPolicy: Retain
+        DeletionPolicy: Delete
         Properties:
-            BucketName: mergeddata10
+            BucketName: mergeddata11
     
     GlueJobImport:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-import2
+            Name: data-import3
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -32,31 +32,33 @@ Resources:
                   import boto3
                   def lambda_handler(event, context):
                     glue_client = boto3.client('glue')
-                    job_name = 'data-import2'
+                    job_name = 'data-import3'
                     response = glue_client.start_job_run(JobName=job_name)
                     return {
                             'statusCode': 200,
                             'body': 'Glue Job started successfully.'
                         }
-            FunctionName: Trigger1
+            FunctionName: Trigger2
             Handler: index.lambda_handler
             Role: arn:aws:iam::467280971091:role/LabRole
             Runtime: python3.10
             Timeout: 10
+            EventName: Hello
+            
 
     GlueDatabase:
         Type: AWS::Glue::Database
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database3  
+                Name: database4  
     
     GlueCrawler:
         Type: AWS::Glue::Crawler
         Properties:
-            Name: CrawlingData2
-            DatabaseName: database3
+            Name: CrawlingData3
+            DatabaseName: database4
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddata10/datawarehouse/
+                    - Path: s3://mergeddata11/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
