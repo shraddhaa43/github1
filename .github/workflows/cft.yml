@@ -5,13 +5,13 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Retain
         Properties:
-            BucketName: mergeddata07
+            BucketName: mergeddata08
     
     GlueJobImport:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-import-from-RDS-and-S3
+            Name: data-import
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -54,5 +54,5 @@ Resources:
             DatabaseName: database1
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddata07/datawarehouse/
+                    - Path: s3://mergeddata08/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole

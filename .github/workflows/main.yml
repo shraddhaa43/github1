@@ -23,7 +23,7 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --stack-name create-crawler3 \
+            --stack-name Injection \
             --template-file .github/workflows/cft.yml \
             --capabilities CAPABILITY_IAM
         env:
