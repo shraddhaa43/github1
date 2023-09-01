@@ -5,7 +5,7 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Retain
         Properties:
-            BucketName: mergeddata05
+            BucketName: mergeddata06
     
     GlueJobImport:
         Type: AWS::Glue::Job
@@ -23,9 +23,22 @@ Resources:
             Command:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
+
     LambdaTrigger:
         Type: AWS::Lambda::Function
         Properties:
+            Code:
+              ZipFile: |
+                  import boto3
+                  def lambda_handler(event, context):
+                    glue_client = boto3.client('glue')
+                    job_name = 'data-import-from-RDS-and-S3'
+                    response = glue.start_job_run(JobName=job_name)
+            FunctionName: Trigger
+            Handler: index.lambda_handler
+            Role: arn:aws:iam::467280971091:role/LabRole
+            Runtime: python3.11
+            Timeout: 10
 
     GlueDatabase:
         Type: AWS::Glue::Database
@@ -41,5 +54,5 @@ Resources:
             DatabaseName: database1
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddata05/datawarehouse/
+                    - Path: s3://mergeddata06/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
