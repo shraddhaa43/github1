@@ -3,6 +3,7 @@ Description: "Create an S3 Bucket"
 Resources:
     MyS3Bucket:
         Type: AWS::S3::Bucket
+        DeletionPolicy: Retain
         Properties:
             BucketName: mergeddata05
     
@@ -22,3 +23,23 @@ Resources:
             Command:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
+    LambdaTrigger:
+        Type: AWS::Lambda::Function
+        Properties:
+
+    GlueDatabase:
+        Type: AWS::Glue::Database
+        Properties:
+            CatalogId: !Ref AWS::AccountId
+            DatabaseInput:
+                Name: database1   
+    
+    GlueCrawler:
+        Type: AWS::Glue::Crawler
+        Properties:
+            Name: CrawlingData
+            DatabaseName: database1
+            Targets:
+                S3Targets:
+                    - Path: s3://mergeddata05/datawarehouse/
+            Role: arn:aws:iam::467280971091:role/LabRole
