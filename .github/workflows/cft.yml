@@ -5,13 +5,13 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Retain
         Properties:
-            BucketName: mergeddata09
+            BucketName: mergeddata10
     
     GlueJobImport:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-import1
+            Name: data-import2
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -32,12 +32,16 @@ Resources:
                   import boto3
                   def lambda_handler(event, context):
                     glue_client = boto3.client('glue')
-                    job_name = 'data-import1'
-                    response = glue.start_job_run(JobName=job_name)
-            FunctionName: Trigger
+                    job_name = 'data-import2'
+                    response = glue_client.start_job_run(JobName=job_name)
+                    return {
+                            'statusCode': 200,
+                            'body': 'Glue Job started successfully.'
+                        }
+            FunctionName: Trigger1
             Handler: index.lambda_handler
             Role: arn:aws:iam::467280971091:role/LabRole
-            Runtime: python3.11
+            Runtime: python3.10
             Timeout: 10
 
     GlueDatabase:
@@ -45,14 +49,14 @@ Resources:
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database2   
+                Name: database3  
     
     GlueCrawler:
         Type: AWS::Glue::Crawler
         Properties:
-            Name: CrawlingData1
-            DatabaseName: database2
+            Name: CrawlingData2
+            DatabaseName: database3
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddata09/datawarehouse/
+                    - Path: s3://mergeddata10/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
