@@ -26,8 +26,7 @@ jobs:
           aws cloudformation deploy \
             --stack-name trail1 \
             --template-file .github/workflows/cft.yml \   
-            --capabilities CAPABILITY_NAMED_IAM
-        #name of IAM is not required Only Defined variables has to be used 3 types   
+            --capabilities CAPABILITY_NAMED_IAM  
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
