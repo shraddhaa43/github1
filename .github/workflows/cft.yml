@@ -5,13 +5,13 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: mergeddatar1
+            BucketName: mergeddatar11
     
     GlueJobImport:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-importsep3
+            Name: data-importsep34
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -38,7 +38,7 @@ Resources:
                             'statusCode': 200,
                             'body': 'Glue Job started successfully.'
                         }
-            FunctionName: Trigger5
+            FunctionName: Trigger51
             Handler: index.lambda_handler
             Role: arn:aws:iam::467280971091:role/LabRole
             Runtime: python3.10
@@ -50,14 +50,16 @@ Resources:
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database6  
+                Name: database61  
     
     GlueCrawler:
         Type: AWS::Glue::Crawler
         Properties:
-            Name: CrawlingData5
-            DatabaseName: database6
+            Name: CrawlingData51
+            DatabaseName: database61
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddatar1/datawarehouse/
+                    - Path: s3://mergeddatar11/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
+    
+    
