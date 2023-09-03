@@ -78,7 +78,7 @@ Resources:
                   JobName: data-importsep36
                   State: SUCCEEDED
             Schedule:
-                ScheduleExpression: cron(20 17? * MON-SUN *) 
+                ScheduleExpression: "cron(22 17? * MON-SUN *)"
 
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
