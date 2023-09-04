@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "Create an S3 Bucket"
 
-
 Resources:
     MyS3Bucket:
         Type: AWS::S3::Bucket
@@ -26,27 +25,6 @@ Resources:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
 
-    # LambdaTrigger:
-    #     Type: AWS::Lambda::Function
-    #     Properties:
-    #         Code:
-    #           ZipFile: |
-    #               import boto3
-    #               def lambda_handler(event, context):
-    #                 glue_client = boto3.client('glue')
-    #                 job_name = 'data-import4'
-    #                 response = glue_client.start_job_run(JobName=job_name)
-    #                 return {
-    #                         'statusCode': 200,
-    #                         'body': 'Glue Job started successfully.'
-    #                     }
-    #         FunctionName: Trigger52
-    #         Handler: index.lambda_handler
-    #         Role: arn:aws:iam::467280971091:role/LabRole
-    #         Runtime: python3.10
-    #         Timeout: 10
-            
-
     GlueDatabase:
         Type: AWS::Glue::Database
         Properties:
@@ -65,39 +43,22 @@ Resources:
             Role: arn:aws:iam::467280971091:role/LabRole
             
     
-    WorkflowJob:
-        Type: AWS::Glue::Workflow
-        Properties:
-            Description: Create workflow
-            MaxConcurrentRuns: 1
-            Name: Jobworkflow
-            
-    WorkflowStartTrigger:
-        Type: AWS::Glue::Trigger
-        DependsOn : GlueJobImport
-        Properties:
-            Name: 'StartTrigger'
-            Type: ON_DEMAND
-            Description: 'Trigger to start the workflow'
-            Actions:
-              - JobName: !Ref data-importsep37
-                WorkflowName: !Ref WorkflowJob
-            
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
+        DependsOn : GlueJobImport
         Properties:
             Name: jobsuccesfultrigger1
             Type: CONDITIONAL
             StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
-              - CrawlerName:  CrawlingData64
+              - Run :  CrawlingData64
             Predicate:
               Conditions:
                 - LogicalOperator: EQUALS
                   JobName: data-importsep37
                   State: SUCCEEDED
-            WorkflowName: !Ref WorkflowJob
+            
 
             
     MyAthenaWorkGroup:
