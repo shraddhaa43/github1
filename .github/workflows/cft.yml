@@ -8,6 +8,22 @@ Resources:
         DeletionPolicy: Delete
         Properties:
             BucketName: mergeddatar15
+
+
+    GlueDatabase:
+        Type: AWS::Glue::Database
+        Properties:
+            CatalogId: !Ref AWS::AccountId
+            DatabaseInput:
+                Name: database65  
+                   
+
+    WorkflowJob:
+        Type: AWS::Glue::Workflow
+        Properties:
+            Description: Create workflow
+            MaxConcurrentRuns: 5
+            Name: jobworkflow1        
     
     GlueJobImport:
         Type: AWS::Glue::Job
@@ -26,12 +42,6 @@ Resources:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
 
-    GlueDatabase:
-        Type: AWS::Glue::Database
-        Properties:
-            CatalogId: !Ref AWS::AccountId
-            DatabaseInput:
-                Name: database65  
     
     GlueCrawler:
         Type: AWS::Glue::Crawler
@@ -43,13 +53,7 @@ Resources:
                     - Path: s3://mergeddatar15/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
     
-    WorkflowJob:
-        Type: AWS::Glue::Workflow
-        Properties:
-           Description: Create workflow
-           MaxConcurrentRuns: 5
-           Name: jobworkflow1
-
+  
     WorkflowStartTrigger:
           Type: AWS::Glue::Trigger
           Properties:
