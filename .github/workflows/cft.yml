@@ -69,14 +69,17 @@ Resources:
         Type: AWS::Glue::Trigger
         Properties:
             Name: jobsuccesfultrigger1
-            Type: Schedule
+            Type: CONDITIONAL
             StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
-              - CrawlerName: !Ref CrawlingData63
-            Schedule:
-                ScheduleExpression: "cron(55 9 * * ? *)"
-
+              - CrawlerName:  CrawlingData63
+            Predicate:
+              Conditions:
+                - LogicalOperator: EQUALS
+                  JobName: data-importsep36
+                  State: SUCCEEDED
+          
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
@@ -89,6 +92,4 @@ Resources:
                 PublishCloudWatchMetricsEnabled: true
                 RequesterPaysEnabled: true
                 ResultConfiguration:
-                    OutputLocation: s3://finalbucketgrp4/
-                    
-                
+                    OutputLocation: s3://finalbucketgrp4/    
