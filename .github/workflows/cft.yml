@@ -118,7 +118,7 @@ Resources:
                      }
                     }
                    }
-                   RoleArn: arn:aws:iam::467280971091:role/YourStepFunctionsRole
+                   RoleArn: arn:aws:iam::467280971091:role/LabRole
                     
     YourStepFunctionsRole:
        Type: AWS::IAM::Role
