@@ -125,6 +125,7 @@ Resources:
        Properties:
          AssumeRolePolicyDocument:
             Version: '2012-10-17'
+            Role: arn:aws:iam::467280971091:role/LabRole
             Statement:
                - Effect: Allow
                  Principal:
