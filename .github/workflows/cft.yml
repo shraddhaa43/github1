@@ -74,6 +74,7 @@ Resources:
             
     WorkflowStartTrigger:
         Type: AWS::Glue::Trigger
+        DependsOn : GlueJobImport
         Properties:
             Name: 'StartTrigger'
             Type: ON_DEMAND
