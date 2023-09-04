@@ -61,8 +61,8 @@ Resources:
               Type: ON_DEMAND
               Description: Trigger for starting the workflow
               Actions:
-                - JobName: !Ref data-importsep39
-              WorkflowName: !Ref jobworkflow1
+                - JobName:  data-importsep39
+              WorkflowName: jobworkflow1
 
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
@@ -76,9 +76,9 @@ Resources:
             Predicate: 
               Conditions:
                 - LogicalOperator: EQUALS
-                  JobName: !Ref data-importsep39
+                  JobName: data-importsep39
                   State: SUCCEEDED
-            WorkflowName:  !Ref jobworkflow1  
+            WorkflowName:  jobworkflow1  
             
             
     MyAthenaWorkGroup:
