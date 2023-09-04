@@ -73,9 +73,9 @@ Resources:
             StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
-              - CrawlerName:  CrawlingData63
+              - CrawlerName: !Ref CrawlingData63
             Schedule:
-                ScheduleExpression: cron(55 9 * * ? *)
+                ScheduleExpression: "cron(55 9 * * ? *)"
 
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
