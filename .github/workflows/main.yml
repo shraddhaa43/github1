@@ -23,7 +23,7 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --stack-name rashedingest15 \
+            --stack-name rashedingest16 \
             --template-file .github/workflows/cft.yml \
             --capabilities CAPABILITY_IAM
         env:
@@ -33,7 +33,9 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
 
-          
+
+
+
 
 
 
