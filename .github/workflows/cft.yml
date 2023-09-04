@@ -73,7 +73,7 @@ Resources:
                 - LogicalOperator: EQUALS
                   JobName: GlueJobImport
                   State: SUCCEEDED
-              WorkflowName:  jobworkflow1  
+            WorkflowName:  jobworkflow1  
             
             
     MyAthenaWorkGroup:
