@@ -57,7 +57,7 @@ Resources:
               Description: 'Trigger for starting the workflow'
               Actions:
                 - JobName: GlueJobImport
-            #   WorkflowName: WorkflowJob1
+              WorkflowName: jobworkflow1
 
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
@@ -73,7 +73,7 @@ Resources:
                 - LogicalOperator: EQUALS
                   JobName: GlueJobImport
                   State: SUCCEEDED
-            #   WorkflowName:  WorkflowJob1  
+              WorkflowName:  jobworkflow1  
             
             
     MyAthenaWorkGroup:
