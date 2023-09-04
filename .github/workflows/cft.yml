@@ -41,7 +41,15 @@ Resources:
                 S3Targets:
                     - Path: s3://mergeddatar15/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
-            
+    
+    WorkflowJob1:
+        Type: AWS::Glue::Workflow
+        Properties:
+           Description: 'Create workflow'
+           MaxConcurrentRuns: 1
+           Name: jobworkflow1
+
+
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
         Properties:
@@ -56,7 +64,7 @@ Resources:
                 - LogicalOperator: EQUALS
                   JobName: data-importsep38
                   State: SUCCEEDED
-                    
+            WorkflowName:  WorkflowJob1        
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
