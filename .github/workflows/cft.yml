@@ -51,7 +51,7 @@ Resources:
             StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
-              - Run :  CrawlingData64
+              - CrawlerName :  CrawlingData64
             Predicate:
               Conditions:
                 - LogicalOperator: EQUALS
