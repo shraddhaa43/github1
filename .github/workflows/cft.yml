@@ -2,6 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Create an S3 Bucket"
 
 Resources:
+    
     MyS3Bucket:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
@@ -42,7 +43,7 @@ Resources:
                     - Path: s3://mergeddatar15/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
     
-    WorkflowJob1:
+    WorkflowJob:
         Type: AWS::Glue::Workflow
         Properties:
            Description: Create workflow
@@ -52,9 +53,9 @@ Resources:
     WorkflowStartTrigger:
           Type: AWS::Glue::Trigger
           Properties:
-              Name: 'StartTrigger'
+              Name: StartTrigger
               Type: ON_DEMAND
-              Description: 'Trigger for starting the workflow'
+              Description: Trigger for starting the workflow
               Actions:
                 - JobName: data-importsep39
               WorkflowName: jobworkflow1
