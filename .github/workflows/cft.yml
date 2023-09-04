@@ -42,23 +42,6 @@ Resources:
                     - Path: s3://mergeddatar15/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
             
-    
-    # CrawlerJobTrigger:
-    #     Type: AWS::Glue::Trigger
-    #     Properties:
-    #         Name: jobsuccesfultrigger1
-    #         Type: CONDITIONAL
-    #         StartOnCreation: TRUE
-    #         Description: Trigger to start the crawler
-    #         Actions:
-    #           - CrawlerName :  CrawlingData64
-    #         Predicate:
-    #           Conditions:
-    #             - LogicalOperator: EQUALS
-    #               JobName: data-importsep38
-    #               State: SUCCEEDED
-            
-
             
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
@@ -98,7 +81,7 @@ Resources:
                             {
                               "Variable": "$.JobRun.JobRunState",
                               "StringEquals": "SUCCEEDED",
-                              "Next": "TriggerGlueCrawler"
+                              "Next": "StartCrawler"
                             }
                         ],
                         "Default": "WaitForJobCompletion"
@@ -108,7 +91,7 @@ Resources:
                         "Seconds": 60,
                         "Next": "RunGlueJob"
                     },
-                        "TriggerGlueCrawler": {
+                        "StartCrawler": {
                             "Type": "Task",
                             "Resource": "arn:aws:states:::glue:startCrawlerSync",
                             "Parameters": {
@@ -118,7 +101,6 @@ Resources:
                      }
                     }
                    }
-                 
         
    
        
