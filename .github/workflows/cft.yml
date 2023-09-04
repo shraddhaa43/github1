@@ -12,7 +12,7 @@ Resources:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-importsep38
+            Name: data-importsep39
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -49,22 +49,31 @@ Resources:
            MaxConcurrentRuns: 1
            Name: jobworkflow1
 
+    WorkflowStartTrigger:
+          Type: AWS::Glue::Trigger
+          Properties:
+              Name: 'StartTrigger'
+              Type: ON_DEMAND
+              Description: 'Trigger for starting the workflow'
+              Actions:
+                - JobName: GlueJobImport
+              WorkflowName: WorkflowJob1
 
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
         Properties:
             Name: jobsuccesfultrigger1
             Type: CONDITIONAL
-            # StartOnCreation: TRUE
+            StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
               - CrawlerName :  CrawlingData64
-            Predicate:
+            Predicate: 
               Conditions:
                 - LogicalOperator: EQUALS
-                  JobName: data-importsep38
+                  JobName: GlueJobImport
                   State: SUCCEEDED
-            # WorkflowName:  WorkflowJob1  
+              WorkflowName:  WorkflowJob1  
             
             
     MyAthenaWorkGroup:
