@@ -56,7 +56,7 @@ Resources:
               Type: ON_DEMAND
               Description: 'Trigger for starting the workflow'
               Actions:
-                - JobName: GlueJobImport
+                - JobName: data-importsep39
               WorkflowName: jobworkflow1
 
     CrawlerJobTrigger:
@@ -71,7 +71,7 @@ Resources:
             Predicate: 
               Conditions:
                 - LogicalOperator: EQUALS
-                  JobName: GlueJobImport
+                  JobName: data-importsep39
                   State: SUCCEEDED
             WorkflowName:  jobworkflow1  
             
