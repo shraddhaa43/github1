@@ -6,13 +6,13 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: mergeddatar14
+            BucketName: mergeddatar15
     
     GlueJobImport:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-importsep37
+            Name: data-importsep38
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -30,7 +30,7 @@ Resources:
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database64  
+                Name: database65  
     
     GlueCrawler:
         Type: AWS::Glue::Crawler
@@ -39,24 +39,24 @@ Resources:
             DatabaseName:  database64
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddatar14/datawarehouse/
+                    - Path: s3://mergeddatar15/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
             
     
-    CrawlerJobTrigger:
-        Type: AWS::Glue::Trigger
-        Properties:
-            Name: jobsuccesfultrigger1
-            Type: CONDITIONAL
-            StartOnCreation: TRUE
-            Description: Trigger to start the crawler
-            Actions:
-              - CrawlerName :  CrawlingData64
-            Predicate:
-              Conditions:
-                - LogicalOperator: EQUALS
-                  JobName: data-importsep37
-                  State: SUCCEEDED
+    # CrawlerJobTrigger:
+    #     Type: AWS::Glue::Trigger
+    #     Properties:
+    #         Name: jobsuccesfultrigger1
+    #         Type: CONDITIONAL
+    #         StartOnCreation: TRUE
+    #         Description: Trigger to start the crawler
+    #         Actions:
+    #           - CrawlerName :  CrawlingData64
+    #         Predicate:
+    #           Conditions:
+    #             - LogicalOperator: EQUALS
+    #               JobName: data-importsep38
+    #               State: SUCCEEDED
             
 
             
@@ -73,3 +73,71 @@ Resources:
                 RequesterPaysEnabled: true
                 ResultConfiguration:
                     OutputLocation: s3://finalbucketgrp4/    
+
+
+    StateMachine:
+        Type: AWS::StepFunctions::StateMachine
+        Properties:
+            DefinitionString:
+                Fn::Sub: |
+                   {
+                    "Comment": "A state machine to run Glue Job and trigger Glue Crawler",
+                    "StartAt": "RunGlueJob",
+                    "States": {
+                    "RunGlueJob": {
+                        "Type": "Task",
+                        "Resource": "arn:aws:states:::glue:startJobRun.sync",
+                        "Parameters": {
+                              "JobName": "data-importsep38"
+                        },
+                        "Next": "CheckGlueJobStatus"
+                    },
+                    "CheckGlueJobStatus": {
+                        "Type": "Choice",
+                        "Choices": [
+                            {
+                              "Variable": "$.JobRun.JobRunState",
+                              "StringEquals": "SUCCEEDED",
+                              "Next": "TriggerGlueCrawler"
+                            }
+                        ],
+                        "Default": "WaitForJobCompletion"
+                    },
+                    "WaitForJobCompletion": {
+                        "Type": "Wait",
+                        "Seconds": 60,
+                        "Next": "RunGlueJob"
+                    },
+                        "TriggerGlueCrawler": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::glue:startCrawlerSync",
+                            "Parameters": {
+                            "CrawlerName": "CrawlingData64"
+                        },
+                        "End": true
+                     }
+                    }
+                   }
+                   RoleArn: arn:aws:iam::467280971091:role/YourStepFunctionsRole
+                    
+    YourStepFunctionsRole:
+       Type: AWS::IAM::Role
+       Properties:
+         AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+               - Effect: Allow
+                 Principal:
+                    Service: states.amazonaws.com
+                 Action: sts:AssumeRole
+            Policies:
+                - PolicyName: GlueJobAndCrawlerExecutionPolicy
+                  PolicyDocument:
+                    Version: '2012-10-17'
+                    Statement:
+                      - Effect: Allow
+                        Action:
+                          - glue:StartJobRun
+                          - glue:StartCrawler
+                        Resource: "*"
+       
