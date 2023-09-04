@@ -7,13 +7,13 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: mergeddatar13
+            BucketName: mergeddatar14
     
     GlueJobImport:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-importsep36
+            Name: data-importsep37
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -26,25 +26,25 @@ Resources:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
 
-    LambdaTrigger:
-        Type: AWS::Lambda::Function
-        Properties:
-            Code:
-              ZipFile: |
-                  import boto3
-                  def lambda_handler(event, context):
-                    glue_client = boto3.client('glue')
-                    job_name = 'data-import4'
-                    response = glue_client.start_job_run(JobName=job_name)
-                    return {
-                            'statusCode': 200,
-                            'body': 'Glue Job started successfully.'
-                        }
-            FunctionName: Trigger52
-            Handler: index.lambda_handler
-            Role: arn:aws:iam::467280971091:role/LabRole
-            Runtime: python3.10
-            Timeout: 10
+    # LambdaTrigger:
+    #     Type: AWS::Lambda::Function
+    #     Properties:
+    #         Code:
+    #           ZipFile: |
+    #               import boto3
+    #               def lambda_handler(event, context):
+    #                 glue_client = boto3.client('glue')
+    #                 job_name = 'data-import4'
+    #                 response = glue_client.start_job_run(JobName=job_name)
+    #                 return {
+    #                         'statusCode': 200,
+    #                         'body': 'Glue Job started successfully.'
+    #                     }
+    #         FunctionName: Trigger52
+    #         Handler: index.lambda_handler
+    #         Role: arn:aws:iam::467280971091:role/LabRole
+    #         Runtime: python3.10
+    #         Timeout: 10
             
 
     GlueDatabase:
@@ -52,19 +52,36 @@ Resources:
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database63  
+                Name: database64  
     
     GlueCrawler:
         Type: AWS::Glue::Crawler
         Properties:
-            Name: CrawlingData63
-            DatabaseName:  database63
+            Name: CrawlingData64
+            DatabaseName:  database64
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddatar13/datawarehouse/
+                    - Path: s3://mergeddatar14/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
+            
     
-    
+    WorkflowJob:
+        Type: AWS::Glue::Workflow
+        Properties:
+            Description: Create workflow
+            MaxConcurrentRuns: 1
+            Name: Jobworkflow
+            
+    WorkflowStartTrigger:
+        Type: AWS::Glue::Trigger
+        Properties:
+            Name: 'StartTrigger'
+            Type: ON_DEMAND
+            Description: 'Trigger to start the workflow'
+            Actions:
+              - JobName: !Ref data-importsep37
+                WorkflowName: !Ref WorkflowJob
+            
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
         Properties:
@@ -73,13 +90,15 @@ Resources:
             StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
-              - CrawlerName:  CrawlingData63
+              - CrawlerName:  CrawlingData64
             Predicate:
               Conditions:
                 - LogicalOperator: EQUALS
-                  JobName: data-importsep36
+                  JobName: data-importsep37
                   State: SUCCEEDED
-          
+            WorkflowName: !Ref WorkflowJob
+
+            
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
