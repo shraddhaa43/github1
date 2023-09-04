@@ -45,7 +45,6 @@ Resources:
     
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
-        DependsOn : GlueJobImport
         Properties:
             Name: jobsuccesfultrigger1
             Type: CONDITIONAL
