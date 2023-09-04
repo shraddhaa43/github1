@@ -42,7 +42,21 @@ Resources:
                     - Path: s3://mergeddatar15/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
             
-            
+    CrawlerJobTrigger:
+        Type: AWS::Glue::Trigger
+        Properties:
+            Name: jobsuccesfultrigger1
+            Type: CONDITIONAL
+            StartOnCreation: TRUE
+            Description: Trigger to start the crawler
+            Actions:
+              - CrawlerName :  CrawlingData64
+            Predicate:
+              Conditions:
+                - LogicalOperator: EQUALS
+                  JobName: data-importsep38
+                  State: SUCCEEDED
+                    
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
@@ -58,49 +72,49 @@ Resources:
                     OutputLocation: s3://finalbucketgrp4/    
 
 
-    StateMachine:
-        Type: AWS::StepFunctions::StateMachine
-        Properties:
-            DefinitionString:
-                Fn::Sub: |
-                   {
-                    "Comment": "A state machine to run Glue Job and trigger Glue Crawler",
-                    "StartAt": "RunGlueJob",
-                    "States": {
-                    "RunGlueJob": {
-                        "Type": "Task",
-                        "Resource": "arn:aws:states:::glue:startJobRun.sync",
-                        "Parameters": {
-                              "JobName": "data-importsep38"
-                        },
-                        "Next": "CheckGlueJobStatus"
-                    },
-                    "CheckGlueJobStatus": {
-                        "Type": "Choice",
-                        "Choices": [
-                            {
-                              "Variable": "$.JobRun.JobRunState",
-                              "StringEquals": "SUCCEEDED",
-                              "Next": "StartCrawler"
-                            }
-                        ],
-                        "Default": "WaitForJobCompletion"
-                    },
-                    "WaitForJobCompletion": {
-                        "Type": "Wait",
-                        "Seconds": 60,
-                        "Next": "RunGlueJob"
-                    },
-                        "StartCrawler": {
-                            "Type": "Task",
-                            "Resource": "arn:aws:states:::glue:startCrawlerSync",
-                            "Parameters": {
-                            "CrawlerName": "CrawlingData64"
-                        },
-                        "End": true
-                     }
-                    }
-                   }
+    # StateMachine:
+    #     Type: AWS::StepFunctions::StateMachine
+    #     Properties:
+    #         DefinitionString:
+    #             Fn::Sub: |
+    #                {
+    #                 "Comment": "A state machine to run Glue Job and trigger Glue Crawler",
+    #                 "StartAt": "RunGlueJob",
+    #                 "States": {
+    #                 "RunGlueJob": {
+    #                     "Type": "Task",
+    #                     "Resource": "arn:aws:states:::glue:startJobRun.sync",
+    #                     "Parameters": {
+    #                           "JobName": "data-importsep38"
+    #                     },
+    #                     "Next": "CheckGlueJobStatus"
+    #                 },
+    #                 "CheckGlueJobStatus": {
+    #                     "Type": "Choice",
+    #                     "Choices": [
+    #                         {
+    #                           "Variable": "$.JobRun.JobRunState",
+    #                           "StringEquals": "SUCCEEDED",
+    #                           "Next": "StartCrawler"
+    #                         }
+    #                     ],
+    #                     "Default": "WaitForJobCompletion"
+    #                 },
+    #                 "WaitForJobCompletion": {
+    #                     "Type": "Wait",
+    #                     "Seconds": 60,
+    #                     "Next": "RunGlueJob"
+    #                 },
+    #                     "StartCrawler": {
+    #                         "Type": "Task",
+    #                         "Resource": "arn:aws:states:::glue:startCrawlerSync",
+    #                         "Parameters": {
+    #                         "CrawlerName": "CrawlingData64"
+    #                     },
+    #                     "End": true
+    #                  }
+    #                 }
+    #                }
         
    
        
