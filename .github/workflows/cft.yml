@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Create an S3 Bucket"
 
 Resources:
-    
+
     MyS3Bucket:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
@@ -47,7 +47,7 @@ Resources:
         Type: AWS::Glue::Workflow
         Properties:
            Description: Create workflow
-           MaxConcurrentRuns: 1
+           MaxConcurrentRuns: 5
            Name: jobworkflow1
 
     WorkflowStartTrigger:
@@ -57,8 +57,8 @@ Resources:
               Type: ON_DEMAND
               Description: Trigger for starting the workflow
               Actions:
-                - JobName: data-importsep39
-              WorkflowName: jobworkflow1
+                - JobName: !Ref data-importsep39
+              WorkflowName: !Ref jobworkflow1
 
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
@@ -72,9 +72,9 @@ Resources:
             Predicate: 
               Conditions:
                 - LogicalOperator: EQUALS
-                  JobName: data-importsep39
+                  JobName: !Ref data-importsep39
                   State: SUCCEEDED
-            WorkflowName:  jobworkflow1  
+            WorkflowName:  !Ref jobworkflow1  
             
             
     MyAthenaWorkGroup:
