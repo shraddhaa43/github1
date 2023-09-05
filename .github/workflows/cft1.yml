@@ -5,7 +5,7 @@ Parameters:
     NumberOfWorkers1:
       Type: Number
       Description: "Number of Glue Job workers"
-      Default: 4 
+      Default: 3 
 
 Resources:
 
