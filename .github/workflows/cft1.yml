@@ -35,7 +35,7 @@ Resources:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-ingestion
+            Name: data-rashed-ingestion
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -90,7 +90,7 @@ Resources:
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
-            Name: MyWorkGroup4
+            Name: MyWorkGroup5
             Description: workgroup for Athena
             State: ENABLED
             WorkGroupConfiguration:
