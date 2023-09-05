@@ -10,17 +10,17 @@ on:
         description: "Enter the Number of Workers Required"
         default: 3
         type: "integer"
-        Required : false
+        required : false
 
 jobs:
-  prepare and test:
+  prepare_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@master
 
 
-  aws cloudformation deploy:
+  aws_cloudformation_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy CloudFormation stack
