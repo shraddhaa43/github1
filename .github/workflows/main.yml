@@ -1,16 +1,10 @@
-name: Github and CFT
+name: create crawler1
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-    inputs:
-      NumberOfWorkers:
-        description: "Enter the Number of Workers Required"
-        default: 3
-        type: "integer"
-        required : false
 
 jobs:
   prepare:
@@ -19,15 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
+      - name: Print Environment Variables
+        run: |
+          echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+          echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          echo "AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}"
+          echo "AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}"
 
-  aws_cloudformation_deploy:
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --stack-name rashedingest18 \
-            --template-file .github/workflows/cft.yml \
+            --stack-name rashedingest17 \
+            --template-file .github/workflows/cft1.yml \
             --capabilities CAPABILITY_IAM
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
