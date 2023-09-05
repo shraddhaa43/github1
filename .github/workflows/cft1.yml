@@ -102,6 +102,8 @@ Resources:
                 ResultConfiguration:
                     OutputLocation: s3://finalbucketgrp4/
 
+                    
+
                 
 
 
