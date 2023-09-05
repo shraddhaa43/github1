@@ -90,7 +90,7 @@ Resources:
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
-            Name: MyWorkGroup3
+            Name: MyWorkGroup4
             Description: workgroup for Athena
             State: ENABLED
             WorkGroupConfiguration:
