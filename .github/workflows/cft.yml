@@ -9,6 +9,17 @@ Resources:
         Properties:
             BucketName: mergeddatar15
 
+    Mybucket:
+        Type: AWS::S3::Bucket
+        DependsOn: LambdaInvokePermission
+        Properties:
+            BucketName: 'scriptfile1'
+            NotificationConfiguration:
+                LambdaConfigurations:
+                    - Event: s3:ObjectCreated:*
+                      Function: !GetAtt WorkflowLambda.Arn
+            
+
 
     GlueDatabase:
         Type: AWS::Glue::Database
@@ -53,6 +64,37 @@ Resources:
                     - Path: s3://mergeddatar15/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
     
+    WorkflowLambda:
+        Type: AWS::Lambda::Function
+        Properties:
+            Code:
+                ZipFile: |
+                    import json
+                    import boto3
+            
+                    def lambda_handler(event, context):
+                        glue = boto3.client('glue')
+                        response = glue.start_workflow_run(Name='jobworkflow1')
+                        print(response)
+                        return {
+                            'statusCode': 200,
+                            'body': json.dumps('Hello from AWS Lambda!')
+                        }
+            
+        Handler: index.lambda_handler
+        Role: arn:aws:iam::467280971091:role/LabRole  # Different for everyone, change the ARN
+        Runtime: python3.11
+        FunctionName: 'LambdaforWorkflow'
+            
+    LambdaInvokePermission:
+        Type: AWS::Lambda::Permission
+        DependsOn: WorkflowLambda
+        Properties:
+            FunctionName: !GetAtt WorkflowLambda.Arn
+            Action: lambda:InvokeFunction
+            Principal: 's3.amazonaws.com'  # Corrected the principal
+            SourceAccount: !Ref AWS::AccountId
+            SourceArn: 'arn:aws:s3:::scriptfile1'  # Use GetAtt instead of Sub
   
     WorkflowStartTrigger:
           Type: AWS::Glue::Trigger
