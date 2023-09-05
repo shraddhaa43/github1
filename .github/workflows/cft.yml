@@ -219,7 +219,7 @@ Resources:
                             'body': json.dumps('Hello from AWS Lambda!')
                         }
 
-            Handler: lambda_handler  # Corrected the Handler value
+            Handler: index.lambda_handler  # Corrected the Handler value
             Role: arn:aws:iam::467280971091:role/LabRole  # Different for everyone, change the ARN
             Runtime: python3.8
             FunctionName: 'LambdaforWorkflow'
