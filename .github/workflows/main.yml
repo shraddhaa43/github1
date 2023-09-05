@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@master
 
 
-  AWS Cloudformation Deploy:
+  aws cloudformation deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy CloudFormation stack
