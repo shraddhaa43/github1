@@ -3,7 +3,7 @@ Description: "Create an S3 Bucket"
 
 Parameters:
     NumberOfWorkers1:
-      Type: Numeric
+      Type: Number
       Description: "Number of Glue Job workers"
       Default: 3 
 
