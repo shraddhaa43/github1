@@ -94,3 +94,11 @@ Resources:
                 RequesterPaysEnabled: true
                 ResultConfiguration:
                     OutputLocation: s3://finalbucketgrp4/    
+
+
+
+
+
+
+
+                    
