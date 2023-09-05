@@ -7,7 +7,7 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: mergeddatar15
+            BucketName: mergeddatar16
 
 
     GlueDatabase:
@@ -15,7 +15,7 @@ Resources:
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database65  
+                Name: database66  
                    
 
     WorkflowJob:
@@ -50,7 +50,7 @@ Resources:
             DatabaseName:  database64
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddatar15/datawarehouse/
+                    - Path: s3://mergeddatar16/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
     
   
