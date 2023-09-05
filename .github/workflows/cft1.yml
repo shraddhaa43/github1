@@ -7,7 +7,7 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: mergeddatar16
+            BucketName: mergeddatar20
 
 
     GlueDatabase:
@@ -15,7 +15,7 @@ Resources:
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database66  
+                Name: database66 
                    
 
     WorkflowJob:
@@ -29,15 +29,15 @@ Resources:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-importsep39
+            Name: data-ingestion
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
-            GlueVersion: 4.0
-            MaxRetries: 0
-            NumberOfWorkers: 6
+            GlueVersion: ${{ GLUEVERSION }}
+            MaxRetries: ${{ MAXRETRIES }}
+            NumberOfWorkers: ${{ NUMBEROFWORKERS }}
             Role: arn:aws:iam::467280971091:role/LabRole
-            Timeout: 40
-            WorkerType: G.1X
+            Timeout: ${{ TIMEOUT }}
+            WorkerType: ${{ WORKERTYPE }}
             Command:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
@@ -50,7 +50,7 @@ Resources:
             DatabaseName:  database64
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddatar16/datawarehouse/
+                    - Path: s3://mergeddatar20/datawarehouse/
             Role: arn:aws:iam::467280971091:role/LabRole
     
   
