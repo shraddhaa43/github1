@@ -1,6 +1,38 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "Create an S3 Bucket"
 
+Parameters:
+    ExecutionClass:
+        Type: String
+        Description: "Execution Class"
+        Default: FLEX 
+    GlueVersion:
+        Type: Float
+        Description: "Glue Version"
+        Default: 4.0 
+    MaxRetries:
+        Type: Number
+        Description: "Number of Max. Retries of Glue Job"
+        Default: 0 
+    NumberOfWorkers:
+        Type: Number
+        Description: "Number of Glue Job workers"
+        Default: 6 
+    LabRole:
+        Type: String
+        Description: "LabRole"
+        Default: arn:aws:iam::467280971091:role/LabRole 
+    Timeout:
+        Type: Number
+        Description: "Timeout for Glue Job"
+        Default: 40
+    WorkerType:
+        Type: String
+        Description: "Type of Glue job Worker"
+        Default: G.1X
+    
+
+
 Resources:
 
     MyS3Bucket:
@@ -31,13 +63,13 @@ Resources:
         Properties:
             Name: data-ingestion
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
-            ExecutionClass: FLEX
-            GlueVersion: ${{ GLUEVERSION }}
-            MaxRetries: ${{ MAXRETRIES }}
-            NumberOfWorkers: ${{ NUMBEROFWORKERS }}
-            Role: arn:aws:iam::467280971091:role/LabRole
-            Timeout: ${{ TIMEOUT }}
-            WorkerType: ${{ WORKERTYPE }}
+            ExecutionClass: !Ref ExecutionClass
+            GlueVersion: !Ref GlueVersion
+            MaxRetries: !Ref MaxRetries
+            NumberOfWorkers: !Ref NumberOfWorkers
+            Role: !Ref LabRole
+            Timeout: !Ref Timeout
+            WorkerType: !Ref WorkerType
             Command:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
@@ -51,7 +83,7 @@ Resources:
             Targets:
                 S3Targets:
                     - Path: s3://mergeddatar20/datawarehouse/
-            Role: arn:aws:iam::467280971091:role/LabRole
+            Role: !Ref LabRole
     
   
     WorkflowStartTrigger:
