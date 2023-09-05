@@ -99,7 +99,7 @@ Resources:
                 PublishCloudWatchMetricsEnabled: true
                 RequesterPaysEnabled: true
                 ResultConfiguration:
-                    OutputLocation: s3://finalbucketgrp4/    
+                    OutputLocation: s3://finalbucketgrp4/
 
                 
 
