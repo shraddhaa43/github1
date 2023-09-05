@@ -50,7 +50,7 @@ Resources:
             DatabaseName:  database64
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddatar16/datawarehouse/
+                    - Path: s3://mergeddatar18/datawarehouse/
             Role: arn:aws:iam::077117346067:role/LabRole
     
   
