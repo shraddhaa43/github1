@@ -101,6 +101,8 @@ Resources:
                 ResultConfiguration:
                     OutputLocation: s3://finalbucketgrp4/    
 
+                
+
 
     # StateMachine:
     #     Type: AWS::StepFunctions::StateMachine
