@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Create an S3 Bucket"
 
 Parameters:
-    NUMBEROFWORKERS:
+    NumberOfWorkers1:
       Type: Number
       Description: "Number of Glue Job workers"
       Default: 4 
@@ -40,7 +40,7 @@ Resources:
             ExecutionClass: FLEX
             GlueVersion: 4.0
             MaxRetries: 0
-            NumberOfWorkers: !Ref NUMBEROFWORKERS
+            NumberOfWorkers: !Ref NumberOfWorkers1
             Role: arn:aws:iam::467280971091:role/LabRole
             Timeout: 40
             WorkerType: G.1X
@@ -90,7 +90,7 @@ Resources:
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
-            Name: MyWorkGroup6
+            Name: MyWorkGroup7
             Description: workgroup for Athena
             State: ENABLED
             WorkGroupConfiguration:
