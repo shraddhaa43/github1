@@ -3,9 +3,9 @@ Description: "Create an S3 Bucket"
 
 Parameters:
     NumberOfWorkers1:
-      Type: String
+      Type: Integer
       Description: "Number of Glue Job workers"
-      Default: NumberOfWorkers1 
+      Default: 3 
 
 Resources:
 
@@ -90,7 +90,7 @@ Resources:
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
-            Name: MyWorkGroup14
+            Name: MyWorkGroup15
             Description: workgroup for Athena
             State: ENABLED
             WorkGroupConfiguration:
