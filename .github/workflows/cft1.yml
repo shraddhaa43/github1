@@ -5,6 +5,7 @@ Parameters:
     NumberOfWorkers:
       Type: String
       Description: "Number of Glue Job workers"
+      Default: ""
       
 
 Resources:
