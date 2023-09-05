@@ -158,7 +158,7 @@ Resources:
             BucketName: scriptfile1
             NotificationConfiguration:
                 LambdaConfigurations:
-                    - Event: 's3:ObjectCreated:*'
+                    - Event: s3:ObjectCreated:*
                       Function: !GetAtt WorkflowLambda.Arn
 
     GlueDatabase:
@@ -230,7 +230,7 @@ Resources:
         Properties:
             FunctionName: !GetAtt WorkflowLambda.Arn
             Action: lambda:InvokeFunction
-            Principal: 's3.amazonaws.com'  # Corrected the principal
+            Principal: 'lambda.amazonaws.com'  # Corrected the principal
             SourceAccount: !Ref AWS::AccountId
             SourceArn: 'arn:aws:s3:::scriptfile1'  # Use GetAtt instead of Sub
 
@@ -277,7 +277,7 @@ Resources:
 
 
 
-                    
+
 
 
 
