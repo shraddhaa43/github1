@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  prepare:
+  CFT:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
