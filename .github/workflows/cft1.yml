@@ -84,7 +84,7 @@ Resources:
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
-            Name: MyWorkGroup
+            Name: MyWorkGroup1
             Description: workgroup for Athena
             State: ENABLED
             WorkGroupConfiguration:
