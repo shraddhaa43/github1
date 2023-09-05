@@ -5,7 +5,7 @@ Parameters:
     NumberOfWorkers:
       Type: Number
       Description: "Number of Glue Job workers"
-      Default: 4  
+      Default: 4 
 
 Resources:
 
@@ -90,7 +90,7 @@ Resources:
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
-            Name: MyWorkGroup1
+            Name: MyWorkGroup2
             Description: workgroup for Athena
             State: ENABLED
             WorkGroupConfiguration:
