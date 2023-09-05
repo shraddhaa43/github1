@@ -1,178 +1,178 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description: "Create an S3 Bucket"
+# AWSTemplateFormatVersion: "2010-09-09"
+# Description: "Create an S3 Bucket"
 
-Parameters:
-    ExecutionClass:
-        Type: String
-        Description: "Execution Class"
-        Default: FLEX 
-    GlueVersion:
-        Type: Float
-        Description: "Glue Version"
-        Default: 4.0 
-    MaxRetries:
-        Type: Number
-        Description: "Number of Max. Retries of Glue Job"
-        Default: 0 
-    NumberOfWorkers:
-        Type: Number
-        Description: "Number of Glue Job workers"
-        Default: 6 
-    LabRole:
-        Type: String
-        Description: "LabRole"
-        Default: arn:aws:iam::467280971091:role/LabRole 
-    Timeout:
-        Type: Number
-        Description: "Timeout for Glue Job"
-        Default: 40
-    WorkerType:
-        Type: String
-        Description: "Type of Glue job Worker"
-        Default: G.1X
+# Parameters:
+#     ExecutionClass:
+#         Type: String
+#         Description: "Execution Class"
+#         Default: FLEX 
+#     GlueVersion:
+#         Type: Float
+#         Description: "Glue Version"
+#         Default: 4.0 
+#     MaxRetries:
+#         Type: Number
+#         Description: "Number of Max. Retries of Glue Job"
+#         Default: 0 
+#     NumberOfWorkers:
+#         Type: Number
+#         Description: "Number of Glue Job workers"
+#         Default: 6 
+#     LabRole:
+#         Type: String
+#         Description: "LabRole"
+#         Default: arn:aws:iam::467280971091:role/LabRole 
+#     Timeout:
+#         Type: Number
+#         Description: "Timeout for Glue Job"
+#         Default: 40
+#     WorkerType:
+#         Type: String
+#         Description: "Type of Glue job Worker"
+#         Default: G.1X
     
 
 
-Resources:
+# Resources:
 
-    MyS3Bucket:
-        Type: AWS::S3::Bucket
-        DeletionPolicy: Delete
-        Properties:
-            BucketName: mergeddatar20
+#     MyS3Bucket:
+#         Type: AWS::S3::Bucket
+#         DeletionPolicy: Delete
+#         Properties:
+#             BucketName: mergeddatar20
 
 
-    GlueDatabase:
-        Type: AWS::Glue::Database
-        Properties:
-            CatalogId: !Ref AWS::AccountId
-            DatabaseInput:
-                Name: database66 
+#     GlueDatabase:
+#         Type: AWS::Glue::Database
+#         Properties:
+#             CatalogId: !Ref AWS::AccountId
+#             DatabaseInput:
+#                 Name: database66 
                    
 
-    WorkflowJob:
-        Type: AWS::Glue::Workflow
-        Properties:
-            Description: Create workflow
-            MaxConcurrentRuns: 1
-            Name: jobworkflow1        
+#     WorkflowJob:
+#         Type: AWS::Glue::Workflow
+#         Properties:
+#             Description: Create workflow
+#             MaxConcurrentRuns: 1
+#             Name: jobworkflow1        
     
-    GlueJobImport:
-        Type: AWS::Glue::Job
-        DependsOn: MyS3Bucket
-        Properties:
-            Name: data-ingestion
-            Description: Ingests data from s3 and writes it as a parquet file to the data lake
-            ExecutionClass: !Ref ExecutionClass
-            GlueVersion: !Ref GlueVersion
-            MaxRetries: !Ref MaxRetries
-            NumberOfWorkers: !Ref NumberOfWorkers
-            Role: !Ref LabRole
-            Timeout: !Ref Timeout
-            WorkerType: !Ref WorkerType
-            Command:
-                Name: glueetl
-                ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
+#     GlueJobImport:
+#         Type: AWS::Glue::Job
+#         DependsOn: MyS3Bucket
+#         Properties:
+#             Name: data-ingestion
+#             Description: Ingests data from s3 and writes it as a parquet file to the data lake
+#             ExecutionClass: !Ref ExecutionClass
+#             GlueVersion: !Ref GlueVersion
+#             MaxRetries: !Ref MaxRetries
+#             NumberOfWorkers: !Ref NumberOfWorkers
+#             Role: !Ref LabRole
+#             Timeout: !Ref Timeout
+#             WorkerType: !Ref WorkerType
+#             Command:
+#                 Name: glueetl
+#                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
 
     
-    GlueCrawler:
-        Type: AWS::Glue::Crawler
-        Properties:
-            Name: CrawlingData64
-            DatabaseName:  database64
-            Targets:
-                S3Targets:
-                    - Path: s3://mergeddatar20/datawarehouse/
-            Role: !Ref LabRole
+#     GlueCrawler:
+#         Type: AWS::Glue::Crawler
+#         Properties:
+#             Name: CrawlingData64
+#             DatabaseName:  database64
+#             Targets:
+#                 S3Targets:
+#                     - Path: s3://mergeddatar20/datawarehouse/
+#             Role: !Ref LabRole
     
   
-    WorkflowStartTrigger:
-          Type: AWS::Glue::Trigger
-          Properties:
-              Name: StartTrigger
-              Type: ON_DEMAND
-              Description: Trigger for starting the workflow
-              Actions:
-                - JobName: !Ref GlueJobImport
-              WorkflowName:  !Ref WorkflowJob
+#     WorkflowStartTrigger:
+#           Type: AWS::Glue::Trigger
+#           Properties:
+#               Name: StartTrigger
+#               Type: ON_DEMAND
+#               Description: Trigger for starting the workflow
+#               Actions:
+#                 - JobName: !Ref GlueJobImport
+#               WorkflowName:  !Ref WorkflowJob
 
-    CrawlerJobTrigger:
-        Type: AWS::Glue::Trigger
-        Properties:
-            Name: jobsuccesfultrigger1
-            Type: CONDITIONAL
-            StartOnCreation: TRUE
-            Description: Trigger to start the crawler
-            Actions:
-              - CrawlerName :  CrawlingData64
-            Predicate: 
-              Conditions:
-                - LogicalOperator: EQUALS
-                  JobName: !Ref GlueJobImport
-                  State: SUCCEEDED
-            WorkflowName: !Ref WorkflowJob  
+#     CrawlerJobTrigger:
+#         Type: AWS::Glue::Trigger
+#         Properties:
+#             Name: jobsuccesfultrigger1
+#             Type: CONDITIONAL
+#             StartOnCreation: TRUE
+#             Description: Trigger to start the crawler
+#             Actions:
+#               - CrawlerName :  CrawlingData64
+#             Predicate: 
+#               Conditions:
+#                 - LogicalOperator: EQUALS
+#                   JobName: !Ref GlueJobImport
+#                   State: SUCCEEDED
+#             WorkflowName: !Ref WorkflowJob  
             
             
-    MyAthenaWorkGroup:
-        Type: AWS::Athena::WorkGroup
-        Properties:
-            Name: MyWorkGroup
-            Description: workgroup for Athena
-            State: ENABLED
-            WorkGroupConfiguration:
-                BytesScannedCutoffPerQuery: 200000000
-                EnforceWorkGroupConfiguration: false
-                PublishCloudWatchMetricsEnabled: true
-                RequesterPaysEnabled: true
-                ResultConfiguration:
-                    OutputLocation: s3://finalbucketgrp4/    
+#     MyAthenaWorkGroup:
+#         Type: AWS::Athena::WorkGroup
+#         Properties:
+#             Name: MyWorkGroup
+#             Description: workgroup for Athena
+#             State: ENABLED
+#             WorkGroupConfiguration:
+#                 BytesScannedCutoffPerQuery: 200000000
+#                 EnforceWorkGroupConfiguration: false
+#                 PublishCloudWatchMetricsEnabled: true
+#                 RequesterPaysEnabled: true
+#                 ResultConfiguration:
+#                     OutputLocation: s3://finalbucketgrp4/    
 
 
-    # StateMachine:
-    #     Type: AWS::StepFunctions::StateMachine
-    #     Properties:
-    #         Role : arn:aws:iam::467280971091:role/LabRole
-    #         StateMachineName : jamm
-    #         DefinitionString:
-    #             Fn::Sub: |
-    #                {
-    #                 "Comment": "A state machine to run Glue Job and trigger Glue Crawler",
-    #                 "StartAt": "RunGlueJob",
-    #                 "States": {
-    #                 "RunGlueJob": {
-    #                     "Type": "Task",
-    #                     "Resource": "arn:aws:states:::glue:startJobRun.sync",
-    #                     "Parameters": {
-    #                           "JobName": "data-importsep38"
-    #                     },
-    #                     "Next": "CheckGlueJobStatus"
-    #                 },
-    #                 "CheckGlueJobStatus": {
-    #                     "Type": "Choice",
-    #                     "Choices": [
-    #                         {
-    #                           "Variable": "$.JobRun.JobRunState",
-    #                           "StringEquals": "SUCCEEDED",
-    #                           "Next": "StartCrawler"
-    #                         }
-    #                     ],
-    #                     "Default": "WaitForJobCompletion"
-    #                 },
-    #                 "WaitForJobCompletion": {
-    #                     "Type": "Wait",
-    #                     "Seconds": 60,
-    #                     "Next": "RunGlueJob"
-    #                 },
-    #                     "StartCrawler": {
-    #                         "Type": "Task",
-    #                         "Resource": "arn:aws:states:::glue:startCrawlerSync",
-    #                         "Parameters": {
-    #                         "CrawlerName": "CrawlingData64"
-    #                     },
-    #                     "End": true
-    #                  }
-    #                 }
-    #                }
+#     # StateMachine:
+#     #     Type: AWS::StepFunctions::StateMachine
+#     #     Properties:
+#     #         Role : arn:aws:iam::467280971091:role/LabRole
+#     #         StateMachineName : jamm
+#     #         DefinitionString:
+#     #             Fn::Sub: |
+#     #                {
+#     #                 "Comment": "A state machine to run Glue Job and trigger Glue Crawler",
+#     #                 "StartAt": "RunGlueJob",
+#     #                 "States": {
+#     #                 "RunGlueJob": {
+#     #                     "Type": "Task",
+#     #                     "Resource": "arn:aws:states:::glue:startJobRun.sync",
+#     #                     "Parameters": {
+#     #                           "JobName": "data-importsep38"
+#     #                     },
+#     #                     "Next": "CheckGlueJobStatus"
+#     #                 },
+#     #                 "CheckGlueJobStatus": {
+#     #                     "Type": "Choice",
+#     #                     "Choices": [
+#     #                         {
+#     #                           "Variable": "$.JobRun.JobRunState",
+#     #                           "StringEquals": "SUCCEEDED",
+#     #                           "Next": "StartCrawler"
+#     #                         }
+#     #                     ],
+#     #                     "Default": "WaitForJobCompletion"
+#     #                 },
+#     #                 "WaitForJobCompletion": {
+#     #                     "Type": "Wait",
+#     #                     "Seconds": 60,
+#     #                     "Next": "RunGlueJob"
+#     #                 },
+#     #                     "StartCrawler": {
+#     #                         "Type": "Task",
+#     #                         "Resource": "arn:aws:states:::glue:startCrawlerSync",
+#     #                         "Parameters": {
+#     #                         "CrawlerName": "CrawlingData64"
+#     #                     },
+#     #                     "End": true
+#     #                  }
+#     #                 }
+#     #                }
         
    
        
