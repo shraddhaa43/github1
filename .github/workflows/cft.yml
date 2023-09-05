@@ -13,10 +13,10 @@ Resources:
         Type: AWS::S3::Bucket
         DependsOn: LambdaInvokePermission
         Properties:
-            BucketName: 'scriptfile1'
+            BucketName: scriptfile1
             NotificationConfiguration:
                 LambdaConfigurations:
-                    - Event: s3:ObjectCreated:*
+                    - Event: 's3:ObjectCreated:*'
                       Function: !GetAtt WorkflowLambda.Arn
             
 
@@ -83,7 +83,7 @@ Resources:
             
         Handler: index.lambda_handler
         Role: arn:aws:iam::467280971091:role/LabRole  # Different for everyone, change the ARN
-        Runtime: python3.11
+        Runtime: python3.8
         FunctionName: 'LambdaforWorkflow'
             
     LambdaInvokePermission:
