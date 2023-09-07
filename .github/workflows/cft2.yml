@@ -27,9 +27,9 @@ Parameters:
         Description: "Timeout for Glue Job"
         
 
-    # WorkerType:
-    #     Type: String
-    #     Description: "Type of Glue job Worker"
+    WorkerType:
+        Type: String
+        Description: "Type of Glue job Worker"
         
 
 Resources:
@@ -73,7 +73,7 @@ Resources:
             NumberOfWorkers: !Ref NumberOfWorkers
             Role: !Ref LabRole
             Timeout: !Ref Timeout
-            WorkerType: G.1X
+            WorkerType: !Ref WorkerType
             Command:
                 Name: glueetl
                 ScriptLocation: s3://projectgitlab/Datawarehouse_Script.py

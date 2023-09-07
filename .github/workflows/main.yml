@@ -30,6 +30,7 @@ jobs:
             --parameter-overrides \
                         NumberOfWorkers=${{ vars.NUMBEROFWORKERS }} \
                         Timeout=${{ vars.TIMEOUT }} \
+                        WorkerType=${{ vars.WORKER_TYPE }} \
             --capabilities CAPABILITY_IAM
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
