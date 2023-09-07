@@ -38,20 +38,20 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: datalake-rawzone-grp4
+            BucketName: datalake-rawzone-grp41
 
     MyS3Bucket12:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: output-grp4  
+            BucketName: output-grp41  
 
     GlueDatabase:
         Type: AWS::Glue::Database
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: gitdatabase
+                Name: gitdatabase1
                    
 
     WorkflowJob:
@@ -59,13 +59,13 @@ Resources:
         Properties:
             Description: Create workflow
             MaxConcurrentRuns: 1
-            Name: jobworkflow1        
+            Name: jobworkflow11        
     
     GlueJobImport:
         Type: AWS::Glue::Job
         DependsOn: MyS3Bucket
         Properties:
-            Name: data-ingestion
+            Name: data-ingestion1
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
@@ -76,14 +76,14 @@ Resources:
             WorkerType: G.1X
             Command:
                 Name: glueetl
-                ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
+                ScriptLocation: s3://projectgitlab/Datawarehouse_Script.py
 
     
     GlueCrawler:
         Type: AWS::Glue::Crawler
         Properties:
-            Name: CrawlingData
-            DatabaseName:  gitdatabase
+            Name: CrawlingData1
+            DatabaseName:  gitdatabase1
             Targets:
                 S3Targets:
                     - Path: s3://datalake-rawzone-grp4/structure/
@@ -93,7 +93,7 @@ Resources:
     WorkflowStartTrigger:
           Type: AWS::Glue::Trigger
           Properties:
-              Name: StartTrigger
+              Name: StartTrigger1
               Type: ON_DEMAND
               Description: Trigger for starting the workflow
               Actions:
@@ -103,12 +103,12 @@ Resources:
     CrawlerJobTrigger:
         Type: AWS::Glue::Trigger
         Properties:
-            Name: jobsuccesfultrigger1
+            Name: jobsuccesfultrigger12
             Type: CONDITIONAL
             StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
-              - CrawlerName :  CrawlingData
+              - CrawlerName :  CrawlingData1
             Predicate: 
               Conditions:
                 - LogicalOperator: EQUALS
@@ -129,7 +129,7 @@ Resources:
                 PublishCloudWatchMetricsEnabled: true
                 RequesterPaysEnabled: true
                 ResultConfiguration:
-                    OutputLocation: s3://output-grp4/    
+                    OutputLocation: s3://output-grp41/    
 
 
     
