@@ -15,14 +15,17 @@ Parameters:
         Type: Number
         Description: "Number of Glue Job workers"
         Default: 6 
+
     LabRole:
         Type: String
         Description: "LabRole"
         Default: arn:aws:iam::467280971091:role/LabRole 
+
     Timeout:
         Type: Number
         Description: "Timeout for Glue Job"
         Default: 40
+        
     WorkerType:
         Type: String
         Description: "Type of Glue job Worker"
@@ -42,7 +45,8 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: output-grp4       
+            BucketName: output-grp4  
+
     GlueDatabase:
         Type: AWS::Glue::Database
         Properties:
