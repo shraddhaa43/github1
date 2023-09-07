@@ -6,10 +6,7 @@ Parameters:
         Type: String
         Description: "Execution Class"
         Default: FLEX 
-    GlueVersion:
-        Type: Float
-        Description: "Glue Version"
-        Default: 4.0 
+    
     MaxRetries:
         Type: Number
         Description: "Number of Max. Retries of Glue Job"
@@ -68,7 +65,7 @@ Resources:
             Name: data-ingestion
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: !Ref ExecutionClass
-            GlueVersion: !Ref GlueVersion
+            GlueVersion: 4.0
             MaxRetries: !Ref MaxRetries
             NumberOfWorkers: !Ref NumberOfWorkers
             Role: !Ref LabRole
