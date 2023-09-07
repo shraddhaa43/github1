@@ -31,6 +31,10 @@ Parameters:
         Type: String
         Description: "Type of Glue job Worker"
        
+    GlueVersion:
+        Type: Float
+        Description: "Type of Glue version job Worker"
+              
         
 
 Resources:
@@ -69,8 +73,8 @@ Resources:
             Name: data-ingestion1
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: !Ref ExecutionClass
-            GlueVersion: 4.0
-            MaxRetries: !Ref MaxRetries
+            GlueVersion: !Ref GlueVersion
+            MaxRetries:  !Ref MaxRetries
             NumberOfWorkers: !Ref NumberOfWorkers
             Role: !Ref LabRole
             Timeout: !Ref Timeout
