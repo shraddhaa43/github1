@@ -7,9 +7,9 @@ Parameters:
     #     Description: "Execution Class"
       
     
-    # MaxRetries:
-    #     Type: Number
-    #     Description: "Number of Max. Retries of Glue Job"
+    MaxRetries:
+        Type: Number
+        Description: "Number of Max. Retries of Glue Job"
       
 
     NumberOfWorkers:
@@ -27,9 +27,9 @@ Parameters:
         Description: "Timeout for Glue Job"
         
 
-    WorkerType:
-        Type: String
-        Description: "Type of Glue job Worker"
+    # WorkerType:
+    #     Type: String
+    #     Description: "Type of Glue job Worker"
        
         
 
@@ -70,11 +70,11 @@ Resources:
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
             ExecutionClass: FLEX
             GlueVersion: 4.0
-            MaxRetries: 0
+            MaxRetries: !Ref MaxRetries
             NumberOfWorkers: !Ref NumberOfWorkers
             Role: !Ref LabRole
             Timeout: !Ref Timeout
-            WorkerType: !Ref WorkerType
+            WorkerType: G.1X
             Command:
                 Name: glueetl
                 ScriptLocation: s3://projectgitlab/Datawarehouse_Script.py
