@@ -15,7 +15,7 @@ jobs:
 
       - name: Upload Script to S3 Bucket
         run: |
-          aws s3 cp .github/workflows/Datawarehouse_Script.py s3://github-scrpits/
+         aws s3 cp .github/workflows/Datawarehouse_Script.py s3://github-scrpits/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -29,10 +29,10 @@ jobs:
             --template-file .github/workflows/cft.yml \
             --parameter-overrides \
                         NumberOfWorkers=${{ vars.NUMBEROFWORKERS }} \
-                        ExecutionClass=${{vars.EXECUTION_CLASS}} \
-                        MaxRetries=${{vars.MAX_RETRIES}} \
-                        Timeout=${{vars.TIMEOUT}} \
-                        WorkerType=${{vars.WORKER_TYPE}} \
+                        ExecutionClass=${{ vars.EXECUTION_CLASS }} \
+                        MaxRetries=${{ vars.MAX_RETRIES }} \
+                        Timeout=${{ vars.TIMEOUT }} \
+                        WorkerType=${{ vars.WORKER_TYPE }} \
             --capabilities CAPABILITY_IAM
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
