@@ -40,7 +40,7 @@ Resources:
         Properties:
             BucketName: datalake-rawzone-grp4
 
-    MyS3Bucket1:
+    MyS3Bucket12:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
