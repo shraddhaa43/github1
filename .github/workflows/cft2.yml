@@ -2,14 +2,14 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Create an S3 Bucket"
 
 Parameters:
-    ExecutionClass:
-        Type: String
-        Description: "Execution Class"
+    # ExecutionClass:
+    #     Type: String
+    #     Description: "Execution Class"
       
     
-    MaxRetries:
-        Type: Number
-        Description: "Number of Max. Retries of Glue Job"
+    # MaxRetries:
+    #     Type: Number
+    #     Description: "Number of Max. Retries of Glue Job"
       
 
     NumberOfWorkers:
@@ -22,14 +22,14 @@ Parameters:
         Description: "LabRole"
         Default: arn:aws:iam::467280971091:role/LabRole
 
-    Timeout:
-        Type: Number
-        Description: "Timeout for Glue Job"
+    # Timeout:
+    #     Type: Number
+    #     Description: "Timeout for Glue Job"
         
 
-    WorkerType:
-        Type: String
-        Description: "Type of Glue job Worker"
+    # WorkerType:
+    #     Type: String
+    #     Description: "Type of Glue job Worker"
         
 
 Resources:
@@ -67,13 +67,13 @@ Resources:
         Properties:
             Name: data-ingestion
             Description: Ingests data from s3 and writes it as a parquet file to the data lake
-            ExecutionClass: !Ref ExecutionClass
+            ExecutionClass: FLEX
             GlueVersion: 4.0
-            MaxRetries: !Ref MaxRetries
+            MaxRetries: 0
             NumberOfWorkers: !Ref NumberOfWorkers
             Role: !Ref LabRole
-            Timeout: !Ref Timeout
-            WorkerType: !Ref WorkerType
+            Timeout: 40
+            WorkerType: G.1X
             Command:
                 Name: glueetl
                 ScriptLocation: s3://github-scrpits/Datawarehouse_Script.py
