@@ -13,6 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set Environment Variables
+        run: |
+          export GIT_WORKER_COUNT=${{ secrets.GIT_WORKER_COUNT }}
+
       - name: Upload script to S3 Bucket
         run: |
           aws s3 cp .github/workflows/Datawarehouse_Script.py s3://github-scrpits/
@@ -27,7 +31,9 @@ jobs:
           aws cloudformation deploy \
             --stack-name ingest18 \
             --template-file .github/workflows/cft2.yml \
-            --capabilities CAPABILITY_IAM
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides \
+              NumberOfWorkers1=$GIT_WORKER_COUNT
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -35,7 +41,7 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
 
-          
+
 
           
 

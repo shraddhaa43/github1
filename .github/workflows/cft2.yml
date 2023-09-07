@@ -12,10 +12,10 @@ Parameters:
         Description: "Number of Max. Retries of Glue Job"
         Default: 0 
 
-    NumberOfWorkers:
+    NumberOfWorkers1:
         Type: Number
         Description: "Number of Glue Job workers"
-        Default: 6 
+        Default: 3 
 
     LabRole:
         Type: String
@@ -72,7 +72,7 @@ Resources:
             ExecutionClass: !Ref ExecutionClass
             GlueVersion: 4.0
             MaxRetries: !Ref MaxRetries
-            NumberOfWorkers: !Ref NumberOfWorkers
+            NumberOfWorkers: !Ref NumberOfWorkers1
             Role: !Ref LabRole
             Timeout: !Ref Timeout
             WorkerType: !Ref WorkerType
