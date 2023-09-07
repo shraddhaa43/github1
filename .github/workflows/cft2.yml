@@ -30,14 +30,7 @@ Parameters:
     WorkerType:
         Type: String
         Description: "Type of Glue job Worker"
-        AllowedValues:
-            - G.8X
-            - G.4X
-            - G.025X
-            - G.2X
-            - G.1X
-            - Z.2X
-            - Standard
+       
         
 
 Resources:
