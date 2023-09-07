@@ -22,9 +22,9 @@ Parameters:
         Description: "LabRole"
         Default: arn:aws:iam::467280971091:role/LabRole
 
-    # Timeout:
-    #     Type: Number
-    #     Description: "Timeout for Glue Job"
+    Timeout:
+        Type: Number
+        Description: "Timeout for Glue Job"
         
 
     # WorkerType:
@@ -72,7 +72,7 @@ Resources:
             MaxRetries: 0
             NumberOfWorkers: !Ref NumberOfWorkers
             Role: !Ref LabRole
-            Timeout: 40
+            Timeout: !Ref Timeout
             WorkerType: G.1X
             Command:
                 Name: glueetl
