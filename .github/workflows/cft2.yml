@@ -39,15 +39,19 @@ Resources:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
-            BucketName: mergeddatar20
+            BucketName: datalake-rawzone-grp4
 
-
+    MyS3Bucket:
+        Type: AWS::S3::Bucket
+        DeletionPolicy: Delete
+        Properties:
+            BucketName: output-grp4       
     GlueDatabase:
         Type: AWS::Glue::Database
         Properties:
             CatalogId: !Ref AWS::AccountId
             DatabaseInput:
-                Name: database66 
+                Name: gitdatabase
                    
 
     WorkflowJob:
@@ -78,11 +82,11 @@ Resources:
     GlueCrawler:
         Type: AWS::Glue::Crawler
         Properties:
-            Name: CrawlingData64
-            DatabaseName:  database64
+            Name: CrawlingData
+            DatabaseName:  gitdatabase
             Targets:
                 S3Targets:
-                    - Path: s3://mergeddatar20/datawarehouse/
+                    - Path: s3://datalake-rawzone-grp4/structure/
             Role: !Ref LabRole
     
   
@@ -104,7 +108,7 @@ Resources:
             StartOnCreation: TRUE
             Description: Trigger to start the crawler
             Actions:
-              - CrawlerName :  CrawlingData64
+              - CrawlerName :  CrawlingData
             Predicate: 
               Conditions:
                 - LogicalOperator: EQUALS
@@ -116,7 +120,7 @@ Resources:
     MyAthenaWorkGroup:
         Type: AWS::Athena::WorkGroup
         Properties:
-            Name: MyWorkGroup
+            Name: MyGroup
             Description: workgroup for Athena
             State: ENABLED
             WorkGroupConfiguration:
@@ -125,7 +129,7 @@ Resources:
                 PublishCloudWatchMetricsEnabled: true
                 RequesterPaysEnabled: true
                 ResultConfiguration:
-                    OutputLocation: s3://finalbucketgrp4/    
+                    OutputLocation: s3://output-grp4/    
 
 
     
