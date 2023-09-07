@@ -11,6 +11,7 @@ Parameters:
         Type: Number
         Description: "Number of Max. Retries of Glue Job"
         Default: 0 
+
     NumberOfWorkers:
         Type: Number
         Description: "Number of Glue Job workers"
@@ -19,13 +20,13 @@ Parameters:
     LabRole:
         Type: String
         Description: "LabRole"
-        Default: arn:aws:iam::467280971091:role/LabRole 
+        Default: arn:aws:iam::467280971091:role/LabRole
 
     Timeout:
         Type: Number
         Description: "Timeout for Glue Job"
         Default: 40
-        
+
     WorkerType:
         Type: String
         Description: "Type of Glue job Worker"
@@ -41,7 +42,7 @@ Resources:
         Properties:
             BucketName: datalake-rawzone-grp4
 
-    MyS3Bucket:
+    MyS3Bucket1:
         Type: AWS::S3::Bucket
         DeletionPolicy: Delete
         Properties:
