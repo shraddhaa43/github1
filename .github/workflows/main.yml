@@ -26,7 +26,7 @@ jobs:
         run: |
           aws cloudformation deploy \
             --stack-name CFTStack1 \
-            --template-file .github/workflows/cft.yml \
+            --template-file .github/workflows/cft2.yml \
             --parameter-overrides \
                         NumberOfWorkers=${{ vars.NUMBEROFWORKERS }} \
             --capabilities CAPABILITY_IAM
@@ -37,6 +37,6 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
 
-          
+
 
 
